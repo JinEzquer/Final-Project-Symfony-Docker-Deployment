@@ -1,31 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Welcome Dashboard
+{% block title %}Project Dashboard
 {% endblock %}
 
 {% block body %}
 	<div class="dashboard-wrapper">
 		<div class="dashboard-card">
-			<h1>🎉 Congratulations! 🎉</h1>
-			<h2>Platform Technology Student</h2>
+
+			<h1>🎉 Project Successfully Deployed 🎉</h1>
+			<h2>Symfony Platform Technology Project</h2>
 
 			<p class="lead">
-				You have successfully run this Symfony application inside Docker and other containers!
+				Your application is now running successfully on the hosting environment.
 			</p>
 
 			<div class="badge badge-header">
-				✅ Docker Compose & Multi-Container Environment Running
+				✅ Application Running
 			</div>
+
 			<div class="badge">
-				{% if db_working %}✅{% else %}❌
+				{% if db_working %}
+					✅ Database connection is working
+				{% else %}
+					❌ Database connection failed
 				{% endif %}
-				Database connection is working</li>
+			</div>
+
+			<p class="footer-text">
+				Platform Technology Dashboard<br>
+				Deployment Successful 🚀
+			</p>
+
 		</div>
-
-
-		<p class="footer-text">
-			Welcome to your platform technology dashboard.<br>
-			Enjoy exploring Docker Compose and containerized development!
-		</p>
 	</div>
-</div>{% endblock %}
+{% endblock %}

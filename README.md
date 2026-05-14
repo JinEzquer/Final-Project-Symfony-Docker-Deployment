@@ -1,82 +1,142 @@
-# Activity 5: Docker Compose Configuration
+# Final Project Deployment Guide
 
-## Overview
+## Symfony Docker Deployment (Railway & Other Hosting Platforms)
 
-Run a **multi-container application** inside Docker using **Docker Compose**, and make sure the services can communicate properly. You should be able to access your application in your browser.
-
----
-
-## Requirements
-
-You must:
-
-- Create your own `Dockerfile` and `docker-compose.yml`
-- Include at least **three services**:
-    - Web application
-    - Database
-    - phpMyAdmin
-- Use **official Docker images** for your services
-- Configure **ports** and **environment variables**
-- Make the app accessible at: http://localhost:<your-port>
+This project demonstrates how to containerize and deploy a Symfony application using Docker and related technologies.
 
 ---
 
-## Required Docker Naming Convention
+## Technologies Used
 
-- **Service names**:
-    - `platform_docker-app`
-    - `platform_docker-db`
-    - `platform_docker-phpmyadmin`
-- **Container names**:
-    - `<your-name>-app`
-    - `<your-name>-db`
-    - `<your-name>-phpmyadmin`
+The application is deployed using:
 
----
-
-## Rules
-
-- Do **NOT** copy a full solution from classmates or the internet
-- You may read documentation and guides
-- You must understand and be able to **explain your work**
+- Docker
+- Nginx
+- PHP-FPM
+- MySQL
+- Docker Compose
 
 ---
 
-## Expected Output
+## Project Objectives
 
-When everything is working:
+This project is designed to demonstrate understanding of:
 
-- You can open a browser and go to your configured port
-- All services defined in `docker-compose.yml` are running correctly
-- The app can communicate with the database (if applicable)
+- Containerized application deployment
+- Symfony production configuration
+- Docker networking and orchestration
+- Web server configuration using Nginx
+- Environment variable management
+- Cloud deployment workflows (e.g., Railway)
 
 ---
 
-## What to Submit
+## Project Requirements
 
-1. **Screen Recording / Demo Video**
-    - Start and run **all containers** (database, application, and phpMyAdmin)
-    - Access the web app in the browser
-    - Show phpMyAdmin in the browser
-    - Create **one (1) product** in the app
-    - Explain what is inside your `docker-compose.yml` and `Dockerfile`  
-      (services, ports, environment variables, volumes, etc.)
+Your final project must include:
 
-2. **GitHub Repository Link**
-    - Include all project files: `docker-compose.yml`, `Dockerfile(s)`, application code, and optional `.env` with placeholders
+- A working Symfony application
+- Dockerized deployment setup
+- Proper Nginx configuration
+- Production-ready environment configuration
+- Database integration
+- Complete deployment documentation
+- Successful deployment on a hosting platform (e.g., Railway)
 
-## TAKE NOTES
+---
 
-    -Do **not** include sensitive information in your submission
-    -If your setup requires environment variables, provide an example `.env` file with placeholders only:
+## Required Files
 
-## Rubrics
+Create the following files in your project root directory:
 
-| Category                                   | Points |
-| ------------------------------------------ | ------ |
-| docker-compose.yml & Dockerfile            | 20     |
-| Running containers correctly               | 10     |
-| Web app and database functionality         | 10     |
-| Naming conventions (services & containers) | 5      |
-| Explanation / Understanding                | 15     |
-| **Total**                                  | **60** |
+### Dockerfile
+
+Defines the blueprint for building the application’s Docker image.  
+Without it, the application cannot be containerized or deployed consistently across environments.
+
+---
+
+### docker-compose.yaml
+
+Defines and manages multiple containers as a single application stack (primarily for local development).  
+Ensures all services work together as a complete system and simplifies container orchestration.
+
+---
+
+### entrypoint.sh
+
+Script executed when a container starts.  
+Ensures the application initializes in a consistent and production-ready state every time.
+
+---
+
+### nginx.conf
+
+Main configuration file for the Nginx web server.  
+Acts as the entry point for all web traffic and forwards requests correctly to the application.
+
+---
+
+### nginx-main.conf
+
+Additional or environment-specific Nginx configuration file.  
+Improves maintainability and allows safer updates without modifying the main config.
+
+---
+
+### .dockerignore
+
+Specifies files and folders excluded from the Docker build context.  
+Helps keep Docker images clean and builds efficient.
+
+---
+
+### .env
+
+Stores environment variables used by the application.  
+Keeps sensitive information out of the codebase and allows flexible configuration across environments.
+
+---
+
+## Deployment Notes
+
+- Ensure all environment variables are properly set before deployment
+- Verify database connection settings in `.env`
+- Use production mode for Symfony in deployment
+- Confirm Nginx is correctly routing requests to PHP-FPM
+- Test Docker Compose setup locally before deploying
+
+---
+
+## Deployment Platform
+
+Recommended platform:
+
+- Railway
+
+## Notes
+
+This project is intended for educational purposes and demonstrates full-stack containerized deployment practices using Symfony.
+
+## What to submit
+
+- Link of your application
+- Recorded video containing (5-10 mins):
+    - Explanation of the Dockerfile setup (1–2 mins)
+    - Explanation of the Nginx configuration (1–2 mins)
+    - Environment variable setup overview (1 min)
+    - Deployment process walkthrough (2–3 mins)
+    - Final proof that the deployed version is working correctly (1–2 mins)
+
+## Grading Rubric (Total: 100 Points)
+
+| Category                              | Description                                           | Points |
+| ------------------------------------- | ----------------------------------------------------- | ------ |
+| **Docker Setup**                      | Dockerfile and docker-compose are correct and working | 25     |
+| **Nginx Configuration**               | Correct routing to PHP-FPM and proper Symfony setup   | 15     |
+| **Symfony Production Setup**          | Production mode, caching, and stable runtime          | 15     |
+| **Environment & Security**            | Proper .env usage and secure configuration            | 10     |
+| **Database Integration**              | Working database connection and CRUD/migrations       | 10     |
+| **Deployment**                        | Successfully deployed and accessible live application | 15     |
+| **Understanding (Video Explanation)** | Clear explanation of Docker, Nginx, and deployment    | 7      |
+| **Video Presentation Quality**        | Clear, complete, and within 5–10 minutes              | 3      |
