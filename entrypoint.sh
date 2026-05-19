@@ -5,7 +5,16 @@ APP_ENV="${APP_ENV:-prod}"
 
 if [ -n "$DATABASE_URL" ]; then
     echo "Waiting for database to become available..."
-    until php -r '$s = @fsockopen("symfony_db", 3306); if ($s) { fclose($s); exit(0); } exit(1);'; do
+    until php -r '
+        $url = getenv("DATABASE_URL");
+        if (!$url) { exit(0); }
+        $p = parse_url($url);
+        $host = $p["host"] ?? "127.0.0.1";
+        $port = $p["port"] ?? 3306;
+        $s = @fsockopen($host, $port);
+        if ($s) { fclose($s); exit(0); }
+        exit(1);
+    '; do
         sleep 2
     done
     echo "Database is ready."
@@ -23,4 +32,10 @@ echo "Running Database Migrations..."
 php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --env="$APP_ENV"
 
 echo "Starting PHP-FPM..."
-exec php-fpm -F
+if command -v nginx >/dev/null 2>&1; then
+    php-fpm -D
+    echo "Starting Nginx..."
+    exec nginx -g "daemon off;"
+else
+    exec php-fpm -F
+fi
