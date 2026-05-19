@@ -25,6 +25,8 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer config platform-check false \
     && composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs
 
+RUN mkdir -p /app/var /app/public
+
 RUN chown -R www-data:www-data /app/var /app/public
 
 EXPOSE 9000
