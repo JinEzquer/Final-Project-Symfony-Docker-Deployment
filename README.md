@@ -108,6 +108,20 @@ Keeps sensitive information out of the codebase and allows flexible configuratio
 
 ---
 
+## Local Docker Troubleshooting (Windows)
+
+If you see an error like:
+
+`open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified`
+
+It means Docker Desktop is not running or not exposing the Linux engine. Fix:
+
+- Start Docker Desktop and wait for “Docker Desktop is running”
+- Ensure it’s using Linux containers (Docker Desktop tray menu)
+- Prefer Compose v2: run `docker compose up --build` (not `docker-compose`)
+
+---
+
 ## Deployment Platform
 
 Recommended platform:

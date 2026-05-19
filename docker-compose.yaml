@@ -1,0 +1,52 @@
+name: platform-deploy
+
+services:
+  symfony_db:
+    container_name: symfony_db
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: symfony_db
+      MYSQL_USER: symfony_user
+      MYSQL_PASSWORD: symfony_pass
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot_password"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  symfony_app:
+    container_name: symfony_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - /app/var
+      - /app/vendor
+    environment:
+      APP_ENV: prod
+      APP_SECRET: c13ea3504ad42a490cf1db97cd557e24
+      DATABASE_URL: "mysql://symfony_user:symfony_pass@symfony_db:3306/symfony_db?serverVersion=8.0.32&charset=utf8mb4"
+    depends_on:
+      symfony_db:
+        condition: service_healthy
+
+  symfony_nginx:
+    container_name: symfony_nginx
+    image: nginx:latest
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/app
+      - ./nginx-main.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      symfony_app:
+        condition: service_started
+
+volumes:
+  db-data:
