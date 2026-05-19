@@ -33,8 +33,11 @@ COPY nginx-main.conf /etc/nginx/conf.d/default.conf
 
 # 7. Install Composer dependencies for production
 ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV APP_ENV=prod
+ENV APP_DEBUG=0
 RUN composer config platform-check false \
-    && composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs
+    && composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs \
+    && composer dump-env prod
 
 # 8. Symfony var/ is gitignored — create dirs before chown (required for Railway build)
 RUN mkdir -p /var/run/nginx /app/var/cache /app/var/log /app/public \
