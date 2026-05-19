@@ -18,6 +18,10 @@ RUN docker-php-ext-install \
     zip \
     opcache
 
+# PHP-FPM must see APP_ENV / DATABASE_URL from the container (Railway variables)
+RUN sed -i 's/^;*clear_env = .*/clear_env = no/' /usr/local/etc/php-fpm.d/www.conf 2>/dev/null \
+    || echo "clear_env = no" >> /usr/local/etc/php-fpm.d/zz-docker.conf
+
 # 3. Install Composer globally
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

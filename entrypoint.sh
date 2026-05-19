@@ -1,7 +1,11 @@
 #!/bin/sh
 set -e
 
-APP_ENV="${APP_ENV:-prod}"
+# Always run as prod in this container (composer install --no-dev has no DebugBundle).
+# Railway/Docker APP_ENV=dev would crash with "DebugBundle not found".
+APP_ENV=prod
+APP_DEBUG=0
+export APP_ENV APP_DEBUG
 
 wait_for_database() {
     if [ -z "$DATABASE_URL" ]; then
