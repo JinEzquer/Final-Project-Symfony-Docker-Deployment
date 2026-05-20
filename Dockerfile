@@ -41,7 +41,8 @@ ENV APP_ENV=prod
 ENV APP_DEBUG=0
 RUN composer config platform-check false \
     && composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs \
-    && composer dump-env prod
+    && composer dump-env prod \
+    && sed -i '/DATABASE_URL/d' .env.local.php
 
 # 8. Symfony var/ is gitignored — create dirs before chown (required for Railway build)
 RUN mkdir -p /var/run/nginx /app/var/cache /app/var/log /app/public \
